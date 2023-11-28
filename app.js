@@ -6,6 +6,8 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var booksRouter = require('./routes/books');
+
 
 var app = express();
 
@@ -34,22 +36,24 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/books', booksRouter);
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
-});
 
-// error handler
-app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+app.use((req, res, next) => {
+  const error = new Error('404 Error')
+  error.status = 404;
+  error.message = 'The page you are looking for does not exist. Sorry!'
+  res.status(404).render('page-not-found', { error: error });
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+// global error handler
+app.use((err, req, res, next) => {
+  err.status = 500
+  err.message = 'Our apolgies. There appears to be a server Error'
+  console.error(`Error: ${err.message}, Status: ${err.status}`)
+  res.status(err.status).render('error', { err: err })
+  })
+})
+
 
 module.exports = app;
 
