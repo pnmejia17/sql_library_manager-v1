@@ -1,5 +1,3 @@
-const Book = require('../models').Book
-
 var express = require('express');
 var router = express.Router();
 

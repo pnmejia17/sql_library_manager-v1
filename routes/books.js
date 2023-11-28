@@ -7,13 +7,15 @@ var router = express.Router();
 // Get Books 
 
 router.get('/books', async function (req, res, next) {
-    const books = await Book.findAll();
-    console.log(books);
-    res.render('index', {
-        books: books,
-        title: 'Books'
-    });
-
+    try {
+        const books = await Book.findAll();
+        console.log(books);
+        res.render('index', {
+            books: books
+        })
+    } catch (error) {
+        next(error)
+    }
 })
 
 router.get('/books/new', async function (req, res, next) {
@@ -22,9 +24,13 @@ router.get('/books/new', async function (req, res, next) {
     });
 })
 
-router.post('books/new', async function (req, res, next) {
-    await Book.create(req.body)
-    res.redirect('/books')
+router.post('/books/new', async function (req, res, next) {
+    try {
+        await Book.create(req.body);
+        res.redirect('/books')
+    } catch (error) {
+        next(error)
+    }
 })
 
 module.exports = router;
