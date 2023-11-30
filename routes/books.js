@@ -4,9 +4,24 @@ var express = require('express');
 var router = express.Router();
 
 
+// handler function to wrap each route 
+// replaces try/catch blocks for 
+// better code readability 
+
+function asyncHandler(cb) {
+    return async (req, res, next) => {
+        try {
+            await cb(req, res, next)
+        } catch (error) {
+            res.status(500).send(error)
+        }
+    }
+}
+
+
 // Get Books 
 
-router.get('/', async function (req, res, next) {
+router.get('/', asyncHandler(async (req, res) => {
     const books = await Book.findAll();
     console.log(books);
     res.render('index', {
@@ -14,19 +29,23 @@ router.get('/', async function (req, res, next) {
         title: 'Books'
     });
 
-})
+}))
 
-router.get('/new', async function (req, res, next) {
+
+// create book form
+router.get('/new', asyncHandler(async (req, res) => {
     res.render('new-book', {
         book: {}
     });
-})
+}))
 
-router.post('/new', async function (req, res, next) {
-    await Book.create(req.body)
+//sequilize validation error
+
+router.post('/new', asyncHandler(async (req, res, next) => {
+    const book = await Book.create(req.body)
     res.redirect('/books')
-})
+}))
 
-  
+//pug file for when form is empty
 
 module.exports = router;
