@@ -46,6 +46,12 @@ router.post('/new', asyncHandler(async (req, res, next) => {
     res.redirect('/books')
 }))
 
-//pug file for when form is empty
+// GET individual book
+router.get("/:id", asyncHandler(async (req, res) => {
+    const book = await Book.findByPk(req.params.id);
+    res.render('update-book', {book: book, title: book.title})
+
+}))
+
 
 module.exports = router;

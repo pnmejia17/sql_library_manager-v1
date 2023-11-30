@@ -98,6 +98,29 @@ router.post('/new', asyncHandler(function _callee4(req, res, next) {
       }
     }
   });
-})); //pug file for when form is empty
+})); // GET individual book
 
+router.get("/:id", asyncHandler(function _callee5(req, res) {
+  var book;
+  return regeneratorRuntime.async(function _callee5$(_context5) {
+    while (1) {
+      switch (_context5.prev = _context5.next) {
+        case 0:
+          _context5.next = 2;
+          return regeneratorRuntime.awrap(Book.findByPk(req.params.id));
+
+        case 2:
+          book = _context5.sent;
+          res.render('update-book', {
+            book: book,
+            title: book.title
+          });
+
+        case 4:
+        case "end":
+          return _context5.stop();
+      }
+    }
+  });
+}));
 module.exports = router;
