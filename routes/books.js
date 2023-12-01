@@ -23,7 +23,6 @@ function asyncHandler(cb) {
 
 router.get('/', asyncHandler(async (req, res) => {
     const books = await Book.findAll();
-    console.log(books);
     res.render('index', {
         books: books,
         title: 'Books'
@@ -39,8 +38,8 @@ router.get('/new', asyncHandler(async (req, res) => {
     });
 }))
 
-//sequilize validation error
 
+//create new book
 router.post('/new', asyncHandler(async (req, res, next) => {
     const book = await Book.create(req.body)
     res.redirect('/books')
@@ -49,8 +48,36 @@ router.post('/new', asyncHandler(async (req, res, next) => {
 // GET individual book
 router.get("/:id", asyncHandler(async (req, res) => {
     const book = await Book.findByPk(req.params.id);
-    res.render('update-book', {book: book, title: book.title})
+    if (book) {
+        res.render('update-book', {
+            book: book,
+            title: book.title
+        })
+    } else {
+        res.sendStatus(404)
+    }
+}))
 
+// update individual book
+router.post("/:id", asyncHandler(async (req, res) => {
+    const book = await Book.findByPk(req.params.id);
+    if (book) {
+        await book.update(req.body);
+        res.redirect("/books")
+    } else {
+        res.sendStatus(404)
+    }
+}))
+
+// delete individual book
+router.post("/:id/delete", asyncHandler(async (req, res) => {
+    const book = await Book.findByPk(req.params.id);
+    if (book) {
+        await book.destroy();
+        res.redirect("/books")
+    } else {
+        res.sendStatus(404)
+    }
 }))
 
 

@@ -48,13 +48,12 @@ router.get('/', asyncHandler(function _callee2(req, res) {
 
         case 2:
           books = _context2.sent;
-          console.log(books);
           res.render('index', {
             books: books,
             title: 'Books'
           });
 
-        case 5:
+        case 4:
         case "end":
           return _context2.stop();
       }
@@ -77,7 +76,7 @@ router.get('/new', asyncHandler(function _callee3(req, res) {
       }
     }
   });
-})); //sequilize validation error
+})); //create new book
 
 router.post('/new', asyncHandler(function _callee4(req, res, next) {
   var book;
@@ -111,14 +110,91 @@ router.get("/:id", asyncHandler(function _callee5(req, res) {
 
         case 2:
           book = _context5.sent;
-          res.render('update-book', {
-            book: book,
-            title: book.title
-          });
+
+          if (book) {
+            res.render('update-book', {
+              book: book,
+              title: book.title
+            });
+          } else {
+            res.sendStatus(404);
+          }
 
         case 4:
         case "end":
           return _context5.stop();
+      }
+    }
+  });
+})); // update individual book
+
+router.post("/:id", asyncHandler(function _callee6(req, res) {
+  var book;
+  return regeneratorRuntime.async(function _callee6$(_context6) {
+    while (1) {
+      switch (_context6.prev = _context6.next) {
+        case 0:
+          _context6.next = 2;
+          return regeneratorRuntime.awrap(Book.findByPk(req.params.id));
+
+        case 2:
+          book = _context6.sent;
+
+          if (!book) {
+            _context6.next = 9;
+            break;
+          }
+
+          _context6.next = 6;
+          return regeneratorRuntime.awrap(book.update(req.body));
+
+        case 6:
+          res.redirect("/books");
+          _context6.next = 10;
+          break;
+
+        case 9:
+          res.sendStatus(404);
+
+        case 10:
+        case "end":
+          return _context6.stop();
+      }
+    }
+  });
+})); // delete individual book
+
+router.post("/:id/delete", asyncHandler(function _callee7(req, res) {
+  var book;
+  return regeneratorRuntime.async(function _callee7$(_context7) {
+    while (1) {
+      switch (_context7.prev = _context7.next) {
+        case 0:
+          _context7.next = 2;
+          return regeneratorRuntime.awrap(Book.findByPk(req.params.id));
+
+        case 2:
+          book = _context7.sent;
+
+          if (!book) {
+            _context7.next = 9;
+            break;
+          }
+
+          _context7.next = 6;
+          return regeneratorRuntime.awrap(book.destroy());
+
+        case 6:
+          res.redirect("/books");
+          _context7.next = 10;
+          break;
+
+        case 9:
+          res.sendStatus(404);
+
+        case 10:
+        case "end":
+          return _context7.stop();
       }
     }
   });
