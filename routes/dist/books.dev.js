@@ -79,24 +79,52 @@ router.get('/new', asyncHandler(function _callee3(req, res) {
 })); //create new book
 
 router.post('/new', asyncHandler(function _callee4(req, res, next) {
-  var book;
+  var book, _book;
+
   return regeneratorRuntime.async(function _callee4$(_context4) {
     while (1) {
       switch (_context4.prev = _context4.next) {
         case 0:
-          _context4.next = 2;
+          _context4.prev = 0;
+          _context4.next = 3;
           return regeneratorRuntime.awrap(Book.create(req.body));
 
-        case 2:
-          book = _context4.sent;
+        case 3:
+          _book = _context4.sent;
           res.redirect('/books');
+          _context4.next = 17;
+          break;
 
-        case 4:
+        case 7:
+          _context4.prev = 7;
+          _context4.t0 = _context4["catch"](0);
+
+          if (!(_context4.t0.name === "SequelizeValidationError")) {
+            _context4.next = 16;
+            break;
+          }
+
+          _context4.next = 12;
+          return regeneratorRuntime.awrap(Book.build(req.body));
+
+        case 12:
+          book = _context4.sent;
+          res.render("new-book", {
+            book: book,
+            errors: _context4.t0.errors
+          });
+          _context4.next = 17;
+          break;
+
+        case 16:
+          throw _context4.t0;
+
+        case 17:
         case "end":
           return _context4.stop();
       }
     }
-  });
+  }, null, null, [[0, 7]]);
 })); // GET individual book
 
 router.get("/:id", asyncHandler(function _callee5(req, res) {
@@ -134,34 +162,65 @@ router.post("/:id", asyncHandler(function _callee6(req, res) {
     while (1) {
       switch (_context6.prev = _context6.next) {
         case 0:
-          _context6.next = 2;
+          _context6.prev = 0;
+          _context6.next = 3;
           return regeneratorRuntime.awrap(Book.findByPk(req.params.id));
 
-        case 2:
+        case 3:
           book = _context6.sent;
 
           if (!book) {
-            _context6.next = 9;
+            _context6.next = 10;
             break;
           }
 
-          _context6.next = 6;
+          _context6.next = 7;
           return regeneratorRuntime.awrap(book.update(req.body));
 
-        case 6:
+        case 7:
           res.redirect("/books");
-          _context6.next = 10;
+          _context6.next = 11;
           break;
 
-        case 9:
+        case 10:
           res.sendStatus(404);
 
-        case 10:
+        case 11:
+          _context6.next = 24;
+          break;
+
+        case 13:
+          _context6.prev = 13;
+          _context6.t0 = _context6["catch"](0);
+
+          if (!(_context6.t0.name === "SequelizeValidationError")) {
+            _context6.next = 23;
+            break;
+          }
+
+          _context6.next = 18;
+          return regeneratorRuntime.awrap(Book.build(req.body));
+
+        case 18:
+          book = _context6.sent;
+          book.id = req.params.id; // make sure correct article gets updated
+
+          res.render("update-book", {
+            book: book,
+            errors: _context6.t0.errors
+          });
+          _context6.next = 24;
+          break;
+
+        case 23:
+          throw _context6.t0;
+
+        case 24:
         case "end":
           return _context6.stop();
       }
     }
-  });
+  }, null, null, [[0, 13]]);
 })); // delete individual book
 
 router.post("/:id/delete", asyncHandler(function _callee7(req, res) {
@@ -195,6 +254,20 @@ router.post("/:id/delete", asyncHandler(function _callee7(req, res) {
         case 10:
         case "end":
           return _context7.stop();
+      }
+    }
+  });
+}));
+router.get('*', asyncHandler(function _callee8(req, res) {
+  return regeneratorRuntime.async(function _callee8$(_context8) {
+    while (1) {
+      switch (_context8.prev = _context8.next) {
+        case 0:
+          res.sendStatus(404);
+
+        case 1:
+        case "end":
+          return _context8.stop();
       }
     }
   });

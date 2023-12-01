@@ -60,7 +60,8 @@ app.use(cookieParser());
 app.use(express["static"](path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/books', booksRouter);
+app.use('/books', booksRouter); // 404 error page
+
 app.use(function (req, res, next) {
   var error = new Error('404 Error');
   error.status = 404;
@@ -71,7 +72,7 @@ app.use(function (req, res, next) {
 
   app.use(function (err, req, res, next) {
     err.status = 500;
-    err.message = 'Our apolgies. There appears to be a server Error';
+    err.message = 'Our apolgies. There appears to be a server error';
     console.error("Error: ".concat(err.message, ", Status: ").concat(err.status));
     res.status(err.status).render('error', {
       err: err

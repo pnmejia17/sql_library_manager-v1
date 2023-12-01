@@ -39,6 +39,8 @@ app.use('/users', usersRouter);
 app.use('/books', booksRouter);
 
 
+// 404 error page
+
 app.use((req, res, next) => {
   const error = new Error('404 Error')
   error.status = 404;
@@ -48,7 +50,7 @@ app.use((req, res, next) => {
 // global error handler
 app.use((err, req, res, next) => {
   err.status = 500
-  err.message = 'Our apolgies. There appears to be a server Error'
+  err.message = 'Our apolgies. There appears to be a server error'
   console.error(`Error: ${err.message}, Status: ${err.status}`)
   res.status(err.status).render('error', { err: err })
   })
