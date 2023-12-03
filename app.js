@@ -47,10 +47,12 @@ app.use((req, res, next) => {
 
 // global error handler
 app.use((err, req, res, next) => {
-  err.status = 500
-  err.message = 'Our apolgies. There appears to be a server error'
+  err.status = err.status || 500
+  err.message = err.message || 'Our apolgies. There appears to be a server error'
   console.error(`Error: ${err.message}, Status: ${err.status}`)
-  res.status(err.status).render('error', { err: err })
+  
+  res.status(err.status)
+  res.render('error', { err: err })
   })
 })
 

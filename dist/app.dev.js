@@ -68,10 +68,11 @@ app.use(function (req, res, next) {
   }); // global error handler
 
   app.use(function (err, req, res, next) {
-    err.status = 500;
-    err.message = 'Our apolgies. There appears to be a server error';
+    err.status = err.status || 500;
+    err.message = err.message || 'Our apolgies. There appears to be a server error';
     console.error("Error: ".concat(err.message, ", Status: ").concat(err.status));
-    res.status(err.status).render('error', {
+    res.status(err.status);
+    res.render('error', {
       err: err
     });
   });

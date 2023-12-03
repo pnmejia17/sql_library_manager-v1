@@ -25,7 +25,7 @@ function asyncHandler(cb) {
           case 5:
             _context.prev = 5;
             _context.t0 = _context["catch"](0);
-            res.status(500).send(_context.t0);
+            next(_context.t0);
 
           case 8:
           case "end":
@@ -43,22 +43,30 @@ router.get('/', asyncHandler(function _callee2(req, res) {
     while (1) {
       switch (_context2.prev = _context2.next) {
         case 0:
-          _context2.next = 2;
+          _context2.prev = 0;
+          _context2.next = 3;
           return regeneratorRuntime.awrap(Book.findAll());
 
-        case 2:
+        case 3:
           books = _context2.sent;
           res.render('index', {
             books: books,
             title: 'Books'
           });
+          _context2.next = 10;
+          break;
 
-        case 4:
+        case 7:
+          _context2.prev = 7;
+          _context2.t0 = _context2["catch"](0);
+          next(_context2.t0);
+
+        case 10:
         case "end":
           return _context2.stop();
       }
     }
-  });
+  }, null, null, [[0, 7]]);
 })); // create book form
 
 router.get('/new', asyncHandler(function _callee3(req, res) {
@@ -117,7 +125,7 @@ router.post('/new', asyncHandler(function _callee4(req, res, next) {
           break;
 
         case 16:
-          throw _context4.t0;
+          next(_context4.t0);
 
         case 17:
         case "end":
@@ -145,7 +153,7 @@ router.get("/:id", asyncHandler(function _callee5(req, res) {
               title: book.title
             });
           } else {
-            res.sendStatus(404);
+            next();
           }
 
         case 4:
@@ -183,7 +191,7 @@ router.post("/:id", asyncHandler(function _callee6(req, res) {
           break;
 
         case 10:
-          res.sendStatus(404);
+          next();
 
         case 11:
           _context6.next = 24;
@@ -213,7 +221,7 @@ router.post("/:id", asyncHandler(function _callee6(req, res) {
           break;
 
         case 23:
-          throw _context6.t0;
+          next(_context6.t0);
 
         case 24:
         case "end":
@@ -249,7 +257,7 @@ router.post("/:id/delete", asyncHandler(function _callee7(req, res) {
           break;
 
         case 9:
-          res.sendStatus(404);
+          next(error);
 
         case 10:
         case "end":
@@ -263,7 +271,7 @@ router.get('*', asyncHandler(function _callee8(req, res) {
     while (1) {
       switch (_context8.prev = _context8.next) {
         case 0:
-          res.sendStatus(404);
+          next(error);
 
         case 1:
         case "end":

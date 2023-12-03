@@ -13,7 +13,7 @@ function asyncHandler(cb) {
         try {
             await cb(req, res, next)
         } catch (error) {
-            res.status(500).send(error)
+            next(error)
         }
     }
 }
@@ -22,12 +22,15 @@ function asyncHandler(cb) {
 // Get Books 
 
 router.get('/', asyncHandler(async (req, res) => {
-    const books = await Book.findAll();
-    res.render('index', {
-        books: books,
-        title: 'Books'
-    });
-
+    try {
+        const books = await Book.findAll();
+        res.render('index', {
+            books: books,
+            title: 'Books'
+        })
+    } catch (error) {
+        next(error)
+    }
 }))
 
 
@@ -53,7 +56,7 @@ router.post('/new', asyncHandler(async (req, res, next) => {
                 errors: error.errors
             })
         } else {
-            throw error
+            next(error)
         }
     }
 }))
@@ -67,7 +70,7 @@ router.get("/:id", asyncHandler(async (req, res) => {
             title: book.title
         })
     } else {
-        res.sendStatus(404)
+        next()
     }
 }))
 
@@ -80,7 +83,7 @@ router.post("/:id", asyncHandler(async (req, res) => {
             await book.update(req.body);
             res.redirect("/books")
         } else {
-            res.sendStatus(404)
+            next()
         }
     } catch (error) {
         if (error.name === "SequelizeValidationError") {
@@ -91,7 +94,7 @@ router.post("/:id", asyncHandler(async (req, res) => {
                 errors: error.errors,
             })
         } else {
-            throw error;
+            next(error);
         }
     }
 }))
@@ -103,11 +106,11 @@ router.post("/:id/delete", asyncHandler(async (req, res) => {
         await book.destroy();
         res.redirect("/books")
     } else {
-        res.sendStatus(404)
+        next(error)
     }
 }))
 
 router.get('*', asyncHandler(async (req, res) => {
-    res.sendStatus(404)
+    next(error)
 }))
 module.exports = router;
