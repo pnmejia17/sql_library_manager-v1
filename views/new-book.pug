@@ -8,17 +8,17 @@ block content
 
     form(action='/books/new' method="post")
         p  
-            label(for="title") Title
-            input#title(name='title' type='text')
+            label(for="title") Title:
+            input(name='title' id='title' type='text')
         p  
-            label(for="author") Author
-            input#author(name='author' type='text')
+            label(for="author") Author:
+            input(name='author' id='author'  type='text')
         p  
-            label(for="genre") Genre
-            input#genre(name='genre' type='text')
+            label(for="genre") Genre:
+            input(name='genre' id='genre' type='text')
         p  
-            label(for="Year") Year
-            input#year(name='year' type='text')
+            label(for="Year") Year:
+            input(name='year' id='year' type='text')
         p
             input(type='submit' value='Create New Book')
         p
