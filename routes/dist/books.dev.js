@@ -135,7 +135,7 @@ router.post('/new', asyncHandler(function _callee4(req, res, next) {
   }, null, null, [[0, 7]]);
 })); // GET individual book
 
-router.get("/:id", asyncHandler(function _callee5(req, res) {
+router.get("/:id", asyncHandler(function _callee5(req, res, next) {
   var book;
   return regeneratorRuntime.async(function _callee5$(_context5) {
     while (1) {
@@ -266,16 +266,30 @@ router.post("/:id/delete", asyncHandler(function _callee7(req, res) {
     }
   });
 }));
-router.get('*', asyncHandler(function _callee8(req, res) {
+router.get('*', asyncHandler(function _callee8(req, res, next) {
   return regeneratorRuntime.async(function _callee8$(_context8) {
     while (1) {
       switch (_context8.prev = _context8.next) {
+        case 0:
+          next();
+
+        case 1:
+        case "end":
+          return _context8.stop();
+      }
+    }
+  });
+}));
+router.get('books/*', asyncHandler(function _callee9(req, res) {
+  return regeneratorRuntime.async(function _callee9$(_context9) {
+    while (1) {
+      switch (_context9.prev = _context9.next) {
         case 0:
           next(error);
 
         case 1:
         case "end":
-          return _context8.stop();
+          return _context9.stop();
       }
     }
   });

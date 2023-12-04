@@ -62,7 +62,7 @@ router.post('/new', asyncHandler(async (req, res, next) => {
 }))
 
 // GET individual book
-router.get("/:id", asyncHandler(async (req, res) => {
+router.get("/:id", asyncHandler(async (req, res, next) => {
     const book = await Book.findByPk(req.params.id);
     if (book) {
         res.render('update-book', {
@@ -110,7 +110,12 @@ router.post("/:id/delete", asyncHandler(async (req, res) => {
     }
 }))
 
-router.get('*', asyncHandler(async (req, res) => {
+router.get('*', asyncHandler(async (req, res, next) => {
+    next()
+}))
+
+router.get('books/*', asyncHandler(async (req, res) => {
     next(error)
 }))
+
 module.exports = router;
